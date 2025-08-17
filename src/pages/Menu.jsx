@@ -1,720 +1,436 @@
-import { motion } from "framer-motion"
-import menu from "../assets/menu.jpg" // Adjust the path to your image
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ShoppingBag, Filter, X, ChevronDown } from "lucide-react";
+// Import food items from data.js
+import foodItems from "../data.js";
 
-export default function MenuPage() {
-  // Extract relevant sections from the menu data
-  const menuSections = {
-    pizzas: [
-      { name: "Margherita", ingredients: "tomate, mozza, basilic", price: 85 },
-      {
-        name: "Classique",
-        ingredients: "tomate, mozza, viande hachée, origan",
-        price: 105,
-      },
-      {
-        name: "Casablanca",
-        ingredients: "crème, artichaut, poulet, épinards",
-        price: 120,
-      },
-      {
-        name: "Bianca",
-        ingredients: "crème, mozza, poulet, jb de dinde, champignons, origan",
-        price: 120,
-      },
-      {
-        name: "Chicago",
-        ingredients: "tomate, mozza, salami, merguez, poivrons, origan",
-        price: 110,
-      },
-      {
-        name: "Mare",
-        ingredients: "tomate, mozza, gambas, moules, calamars, origan",
-        price: 120,
-      },
-      {
-        name: "Spicy Gambas",
-        ingredients: "crème au parmesan, poireaux, gambas, piment, ciboulette",
-        price: 120,
-      },
-      {
-        name: "Tonton",
-        ingredients: "tomate, mozza, thon, câpres, oignons, origan",
-        price: 95,
-      },
-      {
-        name: "César",
-        ingredients: "poulet, mozza, salade, tomates confites, câpres, sauce césar",
-        price: 105,
-      },
-      {
-        name: "Capricciosa",
-        ingredients: "tomate, mozza, viande hachée, champignons, poivrons, origan, olives",
-        price: 110,
-      },
-      {
-        name: "Tartufo",
-        ingredients: "crème, truffe, mozza, roquette, parmesan",
-        price: 135,
-      },
-      {
-        name: "Ortolana",
-        ingredients: "tomate, mozza, légumes grillés, roquette",
-        price: 115,
-      },
-      {
-        name: "Saumon",
-        ingredients: "crème, épinards, saumon fumé, parmesan",
-        price: 125,
-      },
-      {
-        name: "Quatre Saisons",
-        ingredients: "Classique, Mare, Ortolana, César",
-        price: 120,
-      },
-      { name: "Dégustation (hors truffe)", price: 125 },
-    ],
-    asian: [
-      { name: "Maki (6pc) Saumon", price: 40 },
-      { name: "Maki (6pc) Saumon avocat/Saumon cheese", price: 40 },
-      { name: "Maki (6pc) Thon", price: 40 },
-      { name: "Maki (6pc) Kani", price: 35 },
-      { name: "Maki (6pc) Avocat", price: 35 },
-      {
-        name: "Harumaki (8pc) Saumon mangue, surimi, avocat, cream cheese",
-        price: 75,
-      },
-      {
-        name: "Harumaki (8pc) Gambas mangue, surimi, avocat, cream cheese",
-        price: 75,
-      },
-      {
-        name: "Harumaki (8pc) Thon mangue, surimi, avocat, cream cheese",
-        price: 80,
-      },
-      { name: "Nigiri (2pc) Saumon / Thon", price: 40 },
-      { name: "Nigiri (2pc) Kani", price: 35 },
-      { name: "Nigiri (2pc) Avocat", price: 35 },
-      { name: "Sashimi (4pc) Saumon/Thon", price: 50 },
-      { name: "Gunkan (2pc) Saumon", price: 40 },
-      { name: "Gunkan (2pc) Spicy Tuna" },
-      { name: "Gunkan (2pc) Crabe" },
-      { name: "Temaki (2pc) Saumon", price: 70 },
-      { name: "Temaki (2pc) Gambas" },
-      { name: "California (4pc) Saumon", price: 55 },
-      { name: "California (4pc) Cheese", price: 55 },
-      { name: "California (4pc) Spicy Tuna", price: 55 },
-      { name: "California (4pc) Ebi Crunchy", price: 55 },
-      {
-        name: "Special (8pc)",
-        ingredients:
-          "Spicy Tuna thon pimenté, concombre, wakame, teriyaki, oignons frits Dynamite ebi fry, concombre, avocat, spicy mayo, teriyaki Huacaína ebi, avocat, cheese, sauce huacaína Boston ebi fry, cheese, spicy mayo Monster ebi fry, crabe, cheese, avocat, teriyaki Bianca saumon, avocat, oignons frits, spicy mayo, teriyaki Piña saumon, avocat, cheese, surimi, ananas, spicy mayo, teriyaki Savage saumon pimenté, ebi, avocat, sésame, sauce tonkatsu Burlesk ebi fry, crabe, cheese, emmental, poireaux, sauce anguille",
-        price: 130,
-      },
-      { name: "Plateaux (sélection du chef) Original 12pc", price: 170 },
-      { name: "Plateaux (sélection du chef) Classic 16pc", price: 215 },
-      { name: "Plateaux (sélection du chef) Friendly 30pc", price: 365 },
-    ],
-    mains: [
-      {
-        name: "Émincé de Poulet",
-        ingredients: "champignons, crème fraîche",
-        price: 165,
-      },
-      { name: "Entrecôte Maître d'Hôtel 300g", price: 270 },
-      { name: "Milanaise", price: 180 },
-      {
-        name: "Émincé de Filet de Boeuf",
-        ingredients: "champignons",
-        price: 245,
-      },
-      { name: "À la plancha : Saint Pierre", price: 230 },
-      { name: "À la plancha : Saumon", price: 245 },
-    ],
-    tapas: [
-      { name: "Nems 6pc", options: "poulet/mixte", price: [65, 75] },
-      {
-        name: "Rouleaux de printemps 8pc",
-        options: "vegan/poulet/gambas",
-        price: [55, 65, 75],
-      },
-      {
-        name: "Toasts au thon",
-        ingredients: "olives, câpres, oignons, poivrons, herbes, spicy cocktail",
-        price: 60,
-      },
-      {
-        name: "Avocado Toast Classic/Saumon",
-        ingredients: "pain complet, tomates cerises, oeuf dur, pesto",
-        price: [105, 125],
-      },
-      {
-        name: "Quesadillas",
-        options: "poulet/viande hachée",
-        price: [105, 115],
-      },
-      { name: "Guacamole and chips", price: 60 },
-      { name: "Saumon fumé aux câpres", price: 130 },
-      { name: "Gambas Pil Pil", price: 115 },
-    ],
-    starters: [
-      { name: "Burrata", ingredients: "tomates, pesto, focaccia", price: 140 },
-      {
-        name: "Bowl Bun",
-        options: "Poulet/Boeuf/Gambas",
-        ingredients: "vermicelle, nems, concombres, carottes, oignons, cacahuètes",
-        price: [135, 145, 155],
-      },
-      {
-        name: "Carpaccio de Boeuf",
-        ingredients: "parmesan, roquette, pesto",
-        price: 95,
-      },
-      {
-        name: "César",
-        options: "Poulet/Gambas",
-        ingredients: "romaine, tomates, croûtons, parmesan",
-        price: [95, 105],
-      },
-      {
-        name: "Niçoise",
-        ingredients: "thon, tomates, haricots verts, oeuf dur, poivrons, pommes de terre, radis, mesclun, olives",
-        price: 110,
-      },
-      {
-        name: "Gourmande",
-        ingredients: "fruits de mer, thon, avocat, tomates, mozzarella, concombre, carotte, mesclun, pesto",
-        price: 120,
-      },
-      {
-        name: "Fraicheur de Quinoa",
-        ingredients: "feta, concombre, oignons, poivrons, tomates, roquette, olives, origan, coriandre",
-        price: 115,
-      },
-      {
-        name: "Marinade de Fruits de Mer",
-        ingredients:
-          "calamars, gambas, moules, tomates, basilic, avocat, concombre, oignons, coriandre, vinaigrette chili",
-        price: 140,
-      },
-      {
-        name: "Italienne",
-        ingredients: "mesclun, penne, thon, tomates, parmesan, pesto, roquette, basilic",
-        price: 95,
-      },
-    ],
-    crepesSalees: [
-      { name: "Forestière", price: 115 },
-      { name: "Parisienne", price: 105 },
-      { name: "Saumon épinards", price: 125 },
-    ],
-    sandwiches: [
-      {
-        name: "Tuna",
-        ingredients: "œuf, tomates, cornichons, câpres, romaine, spicy cocktail",
-        price: 105,
-      },
-      {
-        name: "César",
-        ingredients: "poulet, mozza, tomates, oignons, romaine, sauce césar",
-        price: 110,
-      },
-      {
-        name: "Chicken Parma",
-        ingredients: "poulet pané, sauce tomate, mozza, roquette, pesto",
-        price: 115,
-      },
-      {
-        name: "Cheese Steak",
-        ingredients: "bœuf, emmental, champignons, oignons, poivrons, sauce cocktail",
-        price: 140,
-      },
-      {
-        name: "Marin",
-        ingredients: "gambas panées, emmental, tomates, oignons, cornichons, sauce tartare",
-        price: 125,
-      },
-      {
-        name: "Bianca",
-        ingredients: "saumon fumé, avocat, œuf, concombre, tomates, romaine, sauce aux câpres",
-        price: 140,
-      },
-    ],
-    burgersEtWraps: [
-      {
-        name: "Cheese Burger",
-        ingredients: "bun maison, viande hachée, tomate, oignons, cheddar, cornichons, sauce bianca",
-        price: 115,
-      },
-      {
-        name: "Chicken Burger",
-        ingredients: "bun maison, poulet pané, tomate, concombre, cheddar, sweet chili",
-        price: 110,
-      },
-      {
-        name: "Chicken Wrap",
-        ingredients: "poulet pané, tomate, cornichons, avocat, sauce relish",
-        price: 110,
-      },
-      {
-        name: "Gambas Crispy Wrap",
-        ingredients: "gambas panées, avocat, tomate, cornichons, romaine, sauce tartare",
-        price: 125,
-      },
-      {
-        name: "Mini Burgers",
-        ingredients: "buns maison, viande hachée, cheddar, sauce cocktail",
-        price: 115,
-      },
-    ],
-    pastas: [
-      {
-        name: "Linguine Saumon",
-        ingredients: "crème fraîche, saumon, aneth",
-        price: 170,
-      },
-      {
-        name: "Linguine Fruits de Mer",
-        ingredients: "fruits de mer, sauce provençale, basilic",
-        price: 180,
-      },
-      {
-        name: "Penne Bianca",
-        ingredients: "poulet, jambon de dinde, champignons, crème fraîche",
-        price: 120,
-      },
-      {
-        name: "Penne Thon",
-        ingredients: "tomate, thon, olives, câpres",
-        price: 105,
-      },
-      {
-        name: "Tortiglioni Arabiatta",
-        ingredients: "tomate, piquant",
-        price: 95,
-      },
-      {
-        name: "Tortiglioni Truffe",
-        ingredients: "crème, champignons, parmesan",
-        price: 160,
-      },
-      {
-        name: "Spaghetti Bolognaise",
-        ingredients: "tomate, viande hachée",
-        price: 115,
-      },
-    ],
-    formulesRapides: [
-      {
-        name: "L'Express",
-        price: 95,
-        description: "boisson chaude au choix + jus frais pressé + pain, beurre, confiture + 4 mini viennoiseries",
-      },
-      {
-        name: "Le Parisien",
-        price: 105,
-        description:
-          "boisson chaude au choix + jus frais pressé + omelette au choix (hors khlii) + pain, beurre, confiture, jben, olives + 3 mini viennoiseries",
-      },
-      {
-        name: "Le Beldi",
-        price: 105,
-        description:
-          "boisson chaude au choix + jus frais pressé + msemen, baghrir, harcha + oeufs au khlii + pain, beurre, jben, olives",
-      },
-    ],
-    formulesBrunch: [
-      {
-        name: "Le Bénédicte",
-        price: [125, 130, 135],
-        description:
-          "jambon / avocat / saumon fumé + boisson chaude au choix + jus frais pressé ou détox + oeufs bénédicte + coupe de fruits frais",
-      },
-      {
-        name: "Le Scandinave",
-        price: 125,
-        description:
-          "boisson chaude au choix + jus frais pressé ou détox + tartine gourmande saumon fumé + banana bread, Nutella",
-      },
-      {
-        name: "Le Brunchy",
-        price: 125,
-        description:
-          "boisson chaude au choix + jus frais pressé ou détox + omelette au choix (hors khlii) + croque jambon fromage + pain, beurre, confiture, jben + pancakes ou mini crêpes + coupe de fruits frais",
-      },
-      {
-        name: "Le British",
-        price: 135,
-        description: "boisson chaude au choix + jus frais pressé ou détox + assiette anglaise + coupe de fruits frais",
-      },
-      {
-        name: "Le Healthy",
-        price: 125,
-        description: "boisson chaude au choix + jus frais pressé ou détox + grilled cheese + coupe de fruits frais",
-      },
-      {
-        name: "Le Green",
-        price: 125,
-        description: "boisson chaude au choix + jus frais pressé ou détox + avocado toast + coupe de fruits frais",
-      },
-    ],
-    sweets: [
-      {
-        name: "Banana Split",
-        ingredients: "banane, glace vanille chocolat, coulis de chocolat, chantilly",
-        price: 75,
-      },
-      {
-        name: "Melba",
-        ingredients: "fruits de saison, glace vanille, chocolat, chantilly",
-        price: 75,
-      },
-      {
-        name: "Dame Blanche",
-        ingredients: "glace vanille, coulis de chocolat, chantilly",
-        price: 70,
-      },
-      {
-        name: "Chocolat Liégeois",
-        ingredients: "glace chocolat, chantilly",
-        price: 65,
-      },
-      {
-        name: "Glaces et Sorbets 2pc",
-        ingredients:
-          "chocolat, caramel beurre salé, nougatine, vanille, fraise, citron, citron gingembre, oreo, chocolat blanc",
-        price: 55,
-      },
-    ],
-    pastries: [
-      { name: "Profiteroles", price: 80 },
-      { name: "Mille-feuille minute", price: 80 },
-      { name: "Tarte fine aux pommes", price: 80 },
-      { name: "Fondant au chocolat", price: 80 },
-      { name: "Brioche perdue", price: 80 },
-      { name: "Café gourmand", price: 80 },
-      { name: "American pancakes", price: 80 },
-      { name: "Plateau de patisseries", price: 80 },
-    ],
-    gaufresCrepes: [
-      {
-        name: "Crêpe Papardelle Oreo",
-        ingredients: "nutella, oreo, framboise, myrtille, glace oreo",
-        price: 80,
-      },
-      {
-        name: "Citrus",
-        ingredients: "crème citron, menthe, meringue, sorbet citron/gingembre",
-        price: 80,
-      },
-      {
-        name: "Bianca",
-        ingredients: "praliné, ganache et glace chocolat blanc, framboise, noisettes",
-        price: 80,
-      },
-      {
-        name: "Côte d'Ivoire",
-        ingredients: "nutella, banane, glace nougatine, KitKat Ball",
-        price: 80,
-      },
-      {
-        name: "Au choix",
-        ingredients: "chocolat, nutella, sucre, caramel beurre salé, citron",
-        price: 60,
-      },
-    ],
-    drinks: {
-      hot: [
-        { name: "Expresso / Deca / Américain", price: 30, category: "hot" },
-        { name: "Capuccino / Nouss Nouss", price: 30, category: "hot" },
-        { name: "Café crème / Viennois", price: [30, 35], category: "hot" },
-        { name: "Café Noisette / Café Spéculos", price: 40, category: "hot" },
-        { name: "Caramel Macchiato", price: 40, category: "hot" },
-        { name: "Chococino", price: 40, category: "hot" },
-        { name: "Chocolat chaud / Viennois", price: [35, 40], category: "hot" },
-        { name: "Thé à la Menthe", price: 30, category: "hot" },
-        { name: "Thé Tchaba", price: 38, category: "hot" },
-      ],
-      cold: [
-        { name: "Sidi Ali", price: [25, 40], category: "cold" },
-        { name: "Oulmès", price: [25, 40], category: "cold" },
-        { name: "Red Bull", price: 50, category: "cold" },
-        { name: "San Pellegrino", price: [40, 50], category: "cold" },
-        { name: "Iced Coffee aromatisé", price: 40, category: "cold" },
-        { name: "Mochastretto", price: 40, category: "cold" },
-        { name: "Ice Tea Maison Pêche/Citron", price: 40, category: "cold" },
-        { name: "Sodas", price: 30, category: "cold" },
-      ],
-      detox: [
-        { name: "Green Basile", ingredients: "brocoli, ananas, orange, basilic", price: 55, category: "detox" },
-        { name: "Vitaminé", ingredients: "carotte, gingembre, ananas, orange", price: 55, category: "detox" },
-        { name: "Bloody Barba", ingredients: "betterave, céleri, mangue", price: 55, category: "detox" },
-        {
-          name: "Sour Popeye",
-          ingredients: "concombre, citron, gingembre, pomme, épinard",
-          price: 55,
-          category: "detox",
-        },
-        { name: "Tropical", ingredients: "ananas, kiwi, mangue", price: 55, category: "detox" },
-      ],
-      milkSmooth: [
-        { name: "Red Smoothie", price: 50, category: "milkSmooth" },
-        { name: "Exotic Smoothie", price: 50, category: "milkSmooth" },
-        {
-          name: "Jus Frais Pressé",
-          ingredients: "orange/citron/carotte/banane/pomme/tomate",
-          price: 45,
-          category: "milkSmooth",
-        },
-        {
-          name: "Jus Frais Pressé",
-          ingredients: "avocat/fruits secs/fraise/mangue/ananas/ginger",
-          price: 55,
-          category: "milkSmooth",
-        },
-        { name: "Milk Shake", ingredients: "vanille/chocolat/fraise/banane/oreo", price: 55, category: "milkSmooth" },
-      ],
-      beers: [
-        { name: "Spéciale Gold", price: 40, category: "beers" },
-        { name: "Heineken/Casablanca/Corona/Smirnoff", price: 60, category: "beers" },
-        { name: "Budweiser/San Miguel/sans alcool", price: 60, category: "beers" },
-      ],
-      cocktails: [
-        { name: "Margarita", price: 90, category: "cocktails" },
-        { name: "Mojito", price: 90, category: "cocktails" },
-        { name: "Negroni", price: 90, category: "cocktails" },
-        { name: "Caipirinha", price: 90, category: "cocktails" },
-        { name: "Cosmopolitan", price: 90, category: "cocktails" },
-        { name: "Espresso Martini", price: 90, category: "cocktails" },
-        { name: "Porn Star", price: 90, category: "cocktails" },
-        { name: "Aperol Spritz", price: 90, category: "cocktails" },
-        { name: "Cucumber Martini", price: 90, category: "cocktails" },
-        { name: "Bellini", price: 90, category: "cocktails" },
-      ],
-      byTheGlass: [
-        { name: "Ricard", price: 90, category: "byTheGlass" },
-        { name: "Jack Daniel's/Honey", price: 100, category: "byTheGlass" },
-        { name: "Gentleman Jack", price: 100, category: "byTheGlass" },
-        { name: "Hendrick's", price: 100, category: "byTheGlass" },
-        { name: "Black Label", price: 100, category: "byTheGlass" },
-        { name: "Chivas", price: 100, category: "byTheGlass" },
-        { name: "Grey Goose", price: 100, category: "byTheGlass" },
-        { name: "Martini", price: 80, category: "byTheGlass" },
-        { name: "Get 27", price: 80, category: "byTheGlass" },
-        { name: "Bombay Sapphire/Gordon", price: 100, category: "byTheGlass" },
-        { name: "Malibu", price: 80, category: "byTheGlass" },
-        { name: "Vins du Bistro", price: 70, category: "byTheGlass" },
-        { name: "Minuty, Chablis, Brouilly", price: 90, category: "byTheGlass" },
-      ],
-      wineChampagne: {
-        blanc: [
-          {
-            name: "Vins du Bistro",
-            price: 280,
-            category: "wineChampagne",
-            type: "blanc",
-          },
-          {
-            name: "S de Siroua",
-            price: 320,
-            category: "wineChampagne",
-            type: "blanc",
-          },
-          {
-            name: "Chablis",
-            price: [280, 400],
-            category: "wineChampagne",
-            type: "blanc",
-          },
-          { name: "Médaillon", price: 280 },
-          {
-            name: "Casillero Diablo",
-            price: 400,
-            category: "wineChampagne",
-            type: "blanc",
-          },
-        ],
-        rosé: [
-          {
-            name: "Vins du Bistro",
-            price: 280,
-            category: "wineChampagne",
-            type: "rosé",
-          },
-          {
-            name: "Mateus",
-            price: 290,
-            category: "wineChampagne",
-            type: "rosé",
-          },
-          {
-            name: "Médaillon",
-            price: 270,
-            category: "wineChampagne",
-            type: "rosé",
-          },
-          {
-            name: "Manon",
-            price: 380,
-            category: "wineChampagne",
-            type: "rosé",
-          },
-          {
-            name: "M de Minuty",
-            price: 390,
-            category: "wineChampagne",
-            type: "rosé",
-          },
-        ],
-        rouge: [
-          {
-            name: "Vins du Bistro",
-            price: 280,
-            category: "wineChampagne",
-            type: "rouge",
-          },
-          {
-            name: "S de Siroua",
-            price: 320,
-            category: "wineChampagne",
-            type: "rouge",
-          },
-          {
-            name: "Brouilly",
-            price: [220, 400],
-            category: "wineChampagne",
-            type: "rouge",
-          },
-          { name: "Médaillon", price: 280, category: "wineChampagne" },
-          {
-            name: "Mouton Cadet",
-            price: 470,
-            category: "wineChampagne",
-            type: "rouge",
-          },
-        ],
-        bulles: [
-          {
-            name: "Laurent Perrier Brut 18.7cl",
-            price: 250,
-            category: "wineChampagne",
-            type: "bulles",
-          },
-          {
-            name: "Laurent Perrier Brut 37.5cl",
-            price: 600,
-            category: "wineChampagne",
-            type: "bulles",
-          },
-          {
-            name: "Laurent Perrier Brut 75cl",
-            price: 1200,
-            category: "wineChampagne",
-            type: "bulles",
-          },
-          {
-            name: "Laurent Perrier Rosé 75 cl",
-            price: 2000,
-            category: "wineChampagne",
-            type: "bulles",
-          },
-        ],
+const Menu = ({ addToCart }) => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Extract unique categories from the imported data
+  const categories = [...new Set(foodItems.map((item) => item.category))];
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Simulate loading data
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
       },
     },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const drawerVariants = {
+    hidden: { y: "100%" },
+    visible: {
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      },
+    },
+  };
+
+  // SEO metadata
+  const title = selectedCategory
+    ? `Menu - ${
+        selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)
+      }`
+    : "Notre délicieux menu";
+  const description = `Découvrez notre menu comprenant ${categories.join(
+    ", "
+  )}. Commandez maintenant !`;
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-white">
+        <div className="relative">
+          <div className="animate-spin rounded-full h-16 w-16 md:h-24 md:w-24 border-t-4 border-b-4 border-emerald-700"></div>
+          <div className="absolute inset-0 flex items-center justify-center text-emerald-700 font-semibold italic">
+            La Brioche
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <div className="min-h-screen">
-    {/* Hero Section */}
-    <div
-      className="h-[40vh] sm:h-[50vh] relative flex items-center justify-center"
-      style={{
-        backgroundImage: `url(${menu})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="absolute inset-0 bg-black/50" />
-      <h1 className="text-4xl sm:text-5xl md:text-7xl text-white font-serif relative z-10">
-        Notre menu
-      </h1>
-    </div>
+  // Filtered items
+  const filteredItems = foodItems.filter(
+    (item) => !selectedCategory || item.category === selectedCategory
+  );
 
-    {/* Menu Section */}
-    <div className="max-w-7xl mx-auto px-4 py-10 md:py-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-        {Object.entries(menuSections).map(([category, items]) => (
-          <section key={category} className="mb-12 md:mb-16">
+  return (
+    <div className="min-h-screen mt-26 bg-white">
+      {/* SEO - Would use Next/Head or React Helmet in a real app */}
+      <div style={{ display: "none" }}>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+      </div>
+
+      {/* Sticky Header with Categories */}
+      <motion.div
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`sticky top-0 z-30 w-full transition-all duration-300 ${
+          scrolled ? "bg-white shadow-md py-2" : "bg-transparent py-4"
+        }`}
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-2xl sm:text-3xl font-serif text-[#722f37] mb-6 md:mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className={`text-2xl font-bold ${
+                scrolled
+                  ? "text-emerald-700 font-serif"
+                  : "font-serif text-emerald-800"
+              }`}
             >
-              {category.toUpperCase()}
+              La Brioche
             </motion.h2>
-            <div className="space-y-6 md:space-y-8">
-              {category === "drinks"
-                ? Object.entries(items).map(([subCategory, subItems]) => (
-                    <div key={subCategory}>
-                      <h3 className="text-xl sm:text-2xl font-serif text-[#722f37] mb-3 md:mb-4">
-                        {subCategory.toUpperCase()}
-                      </h3>
-                      {Array.isArray(subItems)
-                        ? subItems.map((item, index) => (
-                            <motion.div
-                              key={item.name}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                              className="group cursor-pointer mb-3 md:mb-4"
-                            >
-                              <div className="flex justify-between items-start">
-                                <h4 className="text-lg sm:text-xl font-serif text-cream group-hover:text-golden transition-colors">
-                                  {item.name}
-                                </h4>
-                                <span className="text-golden font-serif ml-4">
-                                  {Array.isArray(item.price) ? `${item.price[0]}-${item.price[1]}` : item.price} Dh
-                                </span>
-                              </div>
-                              {item.ingredients && (
-                                <p className="text-cream/80 mt-1 text-sm leading-relaxed">
-                                  {item.ingredients}
-                                </p>
-                              )}
-                            </motion.div>
-                          ))
-                        : null}
-                    </div>
-                  ))
-                : Array.isArray(items) &&
-                  items.map((item, index) => (
-                    <motion.div
-                      key={item.name}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="group cursor-pointer"
-                    >
-                      <div className="flex justify-between items-start">
-                        <h3 className="text-lg sm:text-xl font-serif text-cream group-hover:text-golden transition-colors">
-                          {item.name}
-                        </h3>
-                        <span className="text-golden font-serif ml-4">
-                          {Array.isArray(item.price) ? `${item.price[0]}-${item.price[1]}` : item.price} Dh
-                        </span>
-                      </div>
-                      {item.ingredients && (
-                        <p className="text-cream/80 mt-1 text-sm leading-relaxed">
-                          {item.ingredients}
-                        </p>
-                      )}
-                    </motion.div>
-                  ))}
+
+            {/* Desktop Categories */}
+            <div className="hidden md:flex flex-wrap justify-center gap-2">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setSelectedCategory(null)}
+                className={`px-4 py-1.5 rounded-full font-medium transition-all duration-200 text-sm
+                  ${
+                    !selectedCategory
+                      ? "bg-emerald-700 text-white shadow-md"
+                      : "bg-white text-emerald-700 border border-emerald-200 hover:bg-emerald-50"
+                  }`}
+              >
+                Tous
+              </motion.button>
+
+              {categories.map((category) => (
+                <motion.button
+                  key={category}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-1.5 rounded-full font-medium transition-all duration-200 text-sm
+                    ${
+                      selectedCategory === category
+                        ? "bg-emerald-700 text-white shadow-md"
+                        : "bg-white text-emerald-700 border border-emerald-200 hover:bg-emerald-50"
+                    }`}
+                >
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </motion.button>
+              ))}
             </div>
-          </section>
-        ))}
+
+            {/* Mobile Filter Button */}
+            <div className="md:hidden w-full flex justify-between items-center">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsFilterOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-emerald-200 text-emerald-700 rounded-full shadow-sm"
+              >
+                <Filter className="w-4 h-4" />
+                <span>Catégories</span>
+                <ChevronDown className="w-4 h-4" />
+              </motion.button>
+
+              {selectedCategory && (
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedCategory(null)}
+                  className="px-3 py-1 text-emerald-700 text-sm font-medium"
+                >
+                  Voir tout
+                </motion.button>
+              )}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Hero Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="relative overflow-hidden bg-gradient-to-r from-emerald-700 to-emerald-900 text-white"
+      >
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[url('/placeholder.svg?height=500&width=1000')] bg-cover bg-center"></div>
+        </div>
+
+        <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="max-w-2xl mx-auto text-center"
+          >
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+              Savourez l'Excellence
+            </h1>
+            <div className="w-24 h-1 bg-white mx-auto mb-6"></div>
+            <p className="text-lg md:text-xl opacity-90 mb-8">
+              Des ingrédients frais, des recettes authentiques, une expérience
+              inoubliable
+            </p>
+
+            {selectedCategory && (
+              <div className="inline-block px-6 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white font-medium">
+                {selectedCategory.charAt(0).toUpperCase() +
+                  selectedCategory.slice(1)}
+              </div>
+            )}
+          </motion.div>
+        </div>
+
+        {/* Wave Divider */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1440 120"
+            className="w-full h-auto"
+          >
+            <path
+              fill="#f9fafb"
+              fillOpacity="1"
+              d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
+            ></path>
+          </svg>
+        </div>
+      </motion.div>
+
+      {/* Menu Content */}
+      <div className="container mx-auto px-4 py-12">
+        {/* Menu Items Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+        >
+          {filteredItems.map((item) => (
+            <motion.div
+              key={item.id}
+              variants={itemVariants}
+              className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl
+                       transition-all duration-300 transform hover:-translate-y-1"
+            >
+              <div className="relative h-48 sm:h-52 overflow-hidden">
+                <img
+                  src={item.image || "/placeholder.svg?height=300&width=400"}
+                  alt={item.name}
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                />
+
+                {/* Category Tag */}
+                <div
+                  className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-emerald-700 px-3 py-1 rounded-full
+                              text-xs font-medium shadow-sm"
+                >
+                  {item.category.charAt(0).toUpperCase() +
+                    item.category.slice(1)}
+                </div>
+
+                {/* Special Badge */}
+                {item.isSpecial && (
+                  <div
+                    className="absolute top-3 right-3 bg-amber-500 text-white px-3 py-1 rounded-full
+                                text-xs font-medium shadow-sm"
+                  >
+                    Spécial
+                  </div>
+                )}
+
+                {/* Gradient Overlay */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0
+                              group-hover:opacity-100 transition-opacity duration-300"
+                />
+              </div>
+
+              <div className="p-5">
+                <h3
+                  className="text-xl font-bold text-gray-800 mb-2 group-hover:text-emerald-700
+                             transition-colors duration-300"
+                >
+                  {item.name}
+                </h3>
+
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  {item.description}
+                </p>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-xl font-bold text-emerald-700">
+                    {item.price} Dh
+                  </span>
+
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => addToCart(item)}
+                    className="flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-full
+                             hover:bg-emerald-800 transition-colors duration-300 text-sm font-medium"
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                  </motion.button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Empty State */}
+        {filteredItems.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-16 px-4"
+          >
+            <div className="max-w-md mx-auto">
+              <img
+                src="/placeholder.svg?height=200&width=200"
+                alt="No items found"
+                className="w-32 h-32 mx-auto mb-6 opacity-50"
+              />
+              <h3 className="text-2xl font-bold text-gray-700 mb-2">
+                Aucun plat trouvé
+              </h3>
+              <p className="text-gray-500 mb-6">
+                Nous n'avons pas encore de plats dans cette catégorie.
+              </p>
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className="px-6 py-2 bg-emerald-700 text-white rounded-full hover:bg-emerald-800 transition-colors"
+              >
+                Voir tout le menu
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Mobile Filter Drawer */}
+      <AnimatePresence>
+        {isFilterOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsFilterOpen(false)}
+              className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+            />
+            <motion.div
+              variants={drawerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6 z-50 md:hidden"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-gray-800">
+                  Filtrer par catégorie
+                </h3>
+                <button
+                  onClick={() => setIsFilterOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100"
+                >
+                  <X className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
+
+              <div className="space-y-2 max-h-[50vh] overflow-y-auto pb-6">
+                <motion.button
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setSelectedCategory(null);
+                    setIsFilterOpen(false);
+                  }}
+                  className={`w-full px-4 py-3 rounded-xl font-medium text-left transition-all duration-300
+                    ${
+                      !selectedCategory
+                        ? "bg-emerald-700 text-white"
+                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                    }`}
+                >
+                  Tous les plats
+                </motion.button>
+
+                {categories.map((category) => (
+                  <motion.button
+                    key={category}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setIsFilterOpen(false);
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl font-medium text-left transition-all duration-300
+                      ${
+                        selectedCategory === category
+                          ? "bg-emerald-700 text-white"
+                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                      }`}
+                  >
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Action Button for Mobile */}
+      <div className="fixed bottom-6 right-6 md:hidden z-30">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsFilterOpen(true)}
+          className="w-12 h-12 rounded-full bg-emerald-700 text-white shadow-lg flex items-center justify-center"
+        >
+          <Filter className="w-5 h-5" />
+        </motion.button>
       </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
+export default Menu;

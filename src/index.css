@@ -2,7 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Prata&display=swap');
 
 body {
-  font-family: "";
-  background: #ede8da;
+  font-family: 'Outfit', sans-serif;
+  background: white;
 }
+
+h1 {
+  font-family: 'Prata', serif;
+}
+
+p {
+  font-family: 'PT Serif', serif;
+}
+
 

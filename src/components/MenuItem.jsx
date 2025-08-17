@@ -11,7 +11,6 @@ const MenuItem = ({ item }) => {
       {item.image && (
         <img src={item.image} alt={item.name} className="w-full sm:w-40 h-40 object-cover rounded-lg mb-4 sm:float-left sm:mr-4" />
       )}
-
       {item.options && (
         <p className="text-sm sm:text-base text-muted-foreground mb-2">
           <span className="font-medium">Options:</span> {item.options}
