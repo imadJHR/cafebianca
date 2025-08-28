@@ -10,7 +10,7 @@ const Menu = ({ addToCart }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
 
-  // Extract unique categories from the imported data
+ 
   const categories = [...new Set(foodItems.map((item) => item.category))];
 
   // Handle scroll effect
@@ -126,7 +126,7 @@ const Menu = ({ addToCart }) => {
             </motion.h2>
 
             {/* Desktop Categories */}
-            <div className="hidden md:flex flex-wrap justify-center gap-2">
+            <div className="hidden md:flex flex-wrap mt-26 justify-center gap-2">
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}

@@ -23,6 +23,21 @@ import p from "./assets/p.jpg";
 import q from "./assets/q.jpg";
 import r from "./assets/r.jpg";
 import t from "./assets/t.jpg";
+import a6 from "./assets/a6.jpg";
+import a7 from "./assets/a7.jpg";
+import a8 from "./assets/a8.jpg";
+import a9 from "./assets/a9.jpg";
+import a10 from "./assets/a10.jpg";
+import a11 from "./assets/a11.jpg";
+import a12 from "./assets/a12.jpg";
+import a13 from "./assets/a13.jpg";
+import a14 from "./assets/a14.jpg";
+import a15 from "./assets/a15.jpg";
+import a16 from "./assets/a16.jpg";
+import a17 from "./assets/a17.jpg";
+import a18 from "./assets/a18.jpg";
+import a19 from "./assets/a19.jpg";
+import a21 from "./assets/a21.jpg";
 
 const foodItems = [
   {
@@ -85,7 +100,7 @@ const foodItems = [
     description:
       "Café ou Café crème ou thé à la menthe + Jus d'orange + 2 pancakes nutella 2 œufs + Pain (miel, fromage blanc, olives) yaourt",
     price: 42,
-    image:k,
+    image: k,
     category: "petit dejeuner",
   },
   {
@@ -99,7 +114,7 @@ const foodItems = [
   },
   {
     id: 8,
-    name: "La Bricche",
+    name: "La Brioche",
     description:
       "Café ou Café crème ou thé à la menthe + Jus d'orange + 2 merguez 2 croquettes + 2 oeuf + Toast Avocat Dinde fumée + Fromage Blanc Miel, olives noires + Salade de fruit + Crêpe Nutella + yaourt",
     price: 59,
@@ -140,10 +155,10 @@ const foodItems = [
   },
   {
     id: 13,
-    name: "Café viennois ou cappuccin",
+    name: "cappuccin",
     description: null,
     price: 20,
-    image: null,
+    image: a8,
     category: " boissons chaudes",
   },
   {
@@ -223,7 +238,7 @@ const foodItems = [
     name: "Ice coffee (Vanille, Tonic)",
     description: null,
     price: 22,
-    image: null,
+    image: a10,
     category: "Ice coffee",
   },
   {
@@ -235,8 +250,16 @@ const foodItems = [
     category: "Ice coffee",
   },
   {
+    id: 124,
+    name: "Ice Cofee orange",
+    description: null,
+    price: 28,
+    image: a21,
+    category: "Ice coffee",
+  },
+  {
     id: 25,
-    name: "Ice coffee La Bricche",
+    name: "Ice coffee La Brioche",
     description: null,
     price: 28,
     image: null,
@@ -255,7 +278,7 @@ const foodItems = [
     name: "Smoothie cobano (Ananas, Banane, Fraise)",
     description: null,
     price: 28,
-    image: null,
+    image: a17,
     category: "boissons fraîches",
   },
   {
@@ -279,7 +302,7 @@ const foodItems = [
     name: "Smoothie paradise (Kiwi, Mangue, Banane)",
     description: null,
     price: 28,
-    image: null,
+    image: a11,
     category: "boissons fraîches",
   },
   {
@@ -287,20 +310,28 @@ const foodItems = [
     name: "L'ambassadeur La Brioche",
     description: null,
     price: 28,
-    image: null,
+    image: a6,
     category: "boissons fraîches",
   },
   {
     id: 32,
-    name: "Mojito (Classique, Fruit rouge, Bleu curaçao)",
+    name: "Mojito bleu corason",
     description: null,
     price: 28,
-    image: null,
+    image: a7,
+    category: "boissons fraîches",
+  },
+  {
+    id: 119,
+    name: "Mojito fruit rouge",
+    description: null,
+    price: 28,
+    image: a19,
     category: "boissons fraîches",
   },
   {
     id: 33,
-    name: "Mojito La Bricche",
+    name: "Mojito La Brioche",
     description: null,
     price: 28,
     image: null,
@@ -415,7 +446,7 @@ const foodItems = [
   },
   {
     id: 47,
-    name: "La Bricche",
+    name: "La Brioche",
     description:
       "2 Pièces crevettes royales, mangue, ananas, avocat, maïs, noisette, surimi, calamar, fromage rouge, sauce pesto",
     price: 65,
@@ -523,7 +554,7 @@ const foodItems = [
   },
   {
     id: 61,
-    name: "Filet de Boeuf La Bricche",
+    name: "Filet de Boeuf La Brioche",
     description: null,
     price: 95,
     image: null,
@@ -627,7 +658,7 @@ const foodItems = [
   },
   {
     id: 74,
-    name: "Fruit de mer La Bricche",
+    name: "Fruit de mer La Brioche",
     description: null,
     price: 65,
     image: p,
@@ -683,7 +714,7 @@ const foodItems = [
   },
   {
     id: 81,
-    name: "La Bricche",
+    name: "La Brioche",
     description: "Poulet, viande hachée, dinde fumée, bœuf, fromage, pesto",
     price: 49,
     image: null,
@@ -747,7 +778,7 @@ const foodItems = [
   },
   {
     id: 89,
-    name: "La Bricche",
+    name: "La Brioche",
     description: null,
     price: 59,
     image: null,
@@ -795,10 +826,10 @@ const foodItems = [
   },
   {
     id: 95,
-    name: "Nutella",
+    name: "Crêpe Nutella",
     description: null,
     price: 29,
-    image: null,
+    image: a12,
     category: "Crêpes",
   },
   {
@@ -811,7 +842,7 @@ const foodItems = [
   },
   {
     id: 97,
-    name: "La Bricche",
+    name: "La Brioche",
     description:
       "Banane, fraise, kiwi, boule de glace, nutelle, oreo, fruit sec",
     price: 50,
@@ -852,7 +883,7 @@ const foodItems = [
   },
   {
     id: 102,
-    name: "Milk-shake La Bricche (Snickers)",
+    name: "Milk-shake La Brioche (Snickers)",
     description: null,
     price: 28,
     image: null,
@@ -860,10 +891,10 @@ const foodItems = [
   },
   {
     id: 103,
-    name: "La Bricche 3 Boules",
+    name: "Ice cream la brioche",
     description: "Chocolat, vanille, citron, caramel, nougat, fraise",
     price: 26,
-    image: null,
+    image: a13,
     category: "glaces",
   },
   {
@@ -927,7 +958,7 @@ const foodItems = [
     name: "Tiramisu",
     description: null,
     price: 25,
-    image: null,
+    image: a15,
     category: "Desserts",
   },
   {
@@ -935,7 +966,7 @@ const foodItems = [
     name: "Tarte Carrote Noisete",
     description: null,
     price: 28,
-    image: null,
+    image: a16,
     category: "Desserts",
   },
   {
@@ -943,15 +974,15 @@ const foodItems = [
     name: "Cheesecake",
     description: null,
     price: 25,
-    image: null,
+    image: a18,
     category: "Desserts",
   },
   {
     id: 114,
-    name: "San sebastian",
+    name: "Sansibastian",
     description: null,
     price: 25,
-    image: null,
+    image: a14,
     category: "Desserts",
   },
   {
@@ -970,7 +1001,7 @@ const foodItems = [
     image: a4,
     category: "Plats",
   },
-    {
+  {
     id: 117,
     name: "Burger chicken",
     description:
@@ -978,6 +1009,14 @@ const foodItems = [
     price: 30,
     image: c,
     category: "Burger",
+  },
+  {
+    id: 118,
+    name: "Chokolat a l’encien",
+    description: null,
+    price: 28,
+    image: a9,
+    category: "boissons fraîches",
   },
 ];
 
